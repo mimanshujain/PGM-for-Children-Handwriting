@@ -60,22 +60,4 @@ for year in dirs:
 
 diction_c.pop('dummy',None);
 diction_h.pop('dummy',None);
-print("cursive");
-for x in diction_c:
-    #print (x)
-    #for y in diction_c[x]:
-     #   print (y)
-    if len(diction_c[x]) > 1:
-        print(x+","+str(len(diction_c[x])));
-        #print(y)
-        
-print("handwritten");        
-for x in diction_h:
-    #print (x)
-    #for y in diction_c[x]:
-     #   print (y)
-    if len(diction_h[x]) > 1:
-        #print(x)
-        print(x+","+str(len(diction_h[x])));
-        
-        #print(y)    
+ 
