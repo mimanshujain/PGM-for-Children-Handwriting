@@ -56,6 +56,10 @@ for year in dirs:
 								else:
 									l=[v];
 									diction_c.update({g: l})
+
+
+diction_c.pop('dummy',None);
+diction_h.pop('dummy',None);
 print("cursive");
 for x in diction_c:
     #print (x)
