@@ -1,9 +1,9 @@
-from os import listdir
 import os, sys
 from os.path import isfile, join
+import numpy as np
+import scipy.stats
 
-
-path = "/home/bikramka/Downloads/andresultsTXTfiles";
+path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
 diction_h ={'dummy':[]};
 diction_c ={'dummy':[]};
@@ -60,4 +60,52 @@ for year in dirs:
 
 diction_c.pop('dummy',None);
 diction_h.pop('dummy',None);
+
 print(diction_c['grade 3'][2][1]);
+
+
+
+for x in diction_h:
+    l = len(diction_h[x])
+    a = np.zeros(shape=(6,6))
+    for i in range(1,2):
+        maxRow = 0
+        maxCol = 0
+        for j in range(0,l):
+            #Finding Indexes
+            i1 = diction_h[x][j][i-1]
+            i2 = diction_h[x][j][i]
+            #Will remove this part
+            if i1 == 99 or i1 == -1 or i1 == 5:
+                i1 = 1
+            if i2 == 99 or i2 == -1 or i2 == 5:
+                i2 = 1
+            #Finding the max values
+            if maxRow < i1:
+                maxRow = i1
+            if maxCol < i2:
+                maxCol = i2
+            a[i1][i2] = a[i1][i2] + 1         
+        
+        colSum = np.sum(a, axis=0)
+        rowSum = np.sum(a, axis=1)
+        total = np.sum(colSum)
+        exp = np.zeros(shape=(maxRow+1,maxCol+1))
+        obs = np.zeros(shape=(maxRow+1,maxCol+1))
+        for k in range(0,maxRow+1):
+            for j in range(0,maxCol+1):
+               obs[k][j] = a[k][j]
+               exp[k][j] = (colSum[j]*rowSum[k])/total
+        chi = scipy.stats.chisquare(obs,exp)    
+    break
+print(chi)
+print(exp)
+'''
+print(obs)        
+print(colSum)
+print(rowSum)   
+print(exp)    ''' 
+
+
+ 
+
