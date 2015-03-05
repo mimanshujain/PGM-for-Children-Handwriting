@@ -60,4 +60,4 @@ for year in dirs:
 
 diction_c.pop('dummy',None);
 diction_h.pop('dummy',None);
- 
+print(diction_c['grade 3'][2][1]);
