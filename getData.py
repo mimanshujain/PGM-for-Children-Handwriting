@@ -94,55 +94,56 @@ for key in diction_h:
     l = len(diction_h[key])
     #Initializes the array (Max domain val of a Variable is 5)
     a = np.zeros(shape=(6,6))
-    for i in range(1,2):
-        maxRow = 0
-        maxCol = 0
-        for j in range(0,l):
-            #Finding Indexes
-            i1 = diction_h[key][j][i-1]
-            i2 = diction_h[key][j][i]
-            #Will remove this part
-            if i1 == 99 or i1 == -1 or i1 == 5:
-                i1 = 1
-            if i2 == 99 or i2 == -1 or i2 == 5:
-                i2 = 1
-            #Finding the max values
-            if maxRow < i1:
-                maxRow = i1
-            if maxCol < i2:
-                maxCol = i2
-            a[i1][i2] = a[i1][i2] + 1         
+    for i in range(1,12):        
+        for y in range(0,i):
+            maxRow = 0
+            maxCol = 0
+            for j in range(0,l):
+                #Finding Indexes
+                i1 = diction_h[key][j][y]
+                i2 = diction_h[key][j][i]
+                
+                #Will remove this part
+                if i1 == 99 or i1 == -1 or i1 == 5:
+                    i1 = 1
+                if i2 == 99 or i2 == -1 or i2 == 5:
+                    i2 = 1
+                #Finding the max values
+                if maxRow < i1:
+                    maxRow = i1
+                if maxCol < i2:
+                    maxCol = i2
+                a[i1][i2] = a[i1][i2] + 1         
+            
+            colSum = np.sum(a, axis=0)
+            rowSum = np.sum(a, axis=1)
+            total = np.sum(colSum)
+            exp = np.zeros(shape=(maxRow+1,maxCol+1))
+            obs = np.zeros(shape=(maxRow+1,maxCol+1))
+            
+            for k in range(0,maxRow+1):
+                for r in range(0,maxCol+1):
+                    if a[k][r] == 0:
+                        obs[k][r] = 1
+                    else:
+                        obs[k][r] = a[k][r]
+                        
+                    if colSum[r] == 0:
+                        colSum[r] = maxRow
+                    if rowSum[k] == 0:
+                        rowSum[k] = maxCol
+                        
+                    exp[k][r] = (colSum[r]*rowSum[k])/total
+            
+            c = np.square(np.array(obs)-np.array(exp))/exp
+            chi = np.sum(c)
+            chi_map[key + "-" + str(y) + "-" + str(i)] = chi   
         
-        colSum = np.sum(a, axis=0)
-        rowSum = np.sum(a, axis=1)
-        total = np.sum(colSum)
-        exp = np.zeros(shape=(maxRow+1,maxCol+1))
-        obs = np.zeros(shape=(maxRow+1,maxCol+1))
-          
-        for k in range(0,maxRow+1):
-            for j in range(0,maxCol+1):
-                if a[k][j] == 0:
-                    obs[k][j] = 1
-                else:
-                    obs[k][j] = a[k][j]
-                    
-                if colSum[j] == 0:
-                    colSum[j] = maxRow
-                if rowSum[k] == 0:
-                    rowSum[k] = maxCol
-                    
-                exp[k][j] = (colSum[j]*rowSum[k])/total
-        
-        c = np.square(np.array(obs)-np.array(exp))/exp
-        chi = np.sum(c)
-        chi_map[key + "-" + str(i-1) + "-" + str(i)] = chi   
         
         
-        
-print(chi_map)
 sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
-print(sorted_x)
 pickle.dump( sorted_x, open( currPath+"/chiValues.p", "wb" ) )
+print(len(sorted_x))
 #
 #print(obs)  
 #print(exp) 
