@@ -1,12 +1,14 @@
 import os, sys
 from os.path import isfile, join
 import numpy as np
-import scipy.stats
+#import scipy.stats
 import pickle
 import operator
+from scipy import stats
 currPath = os.path.dirname(__file__)
 #print(s)
-path = currPath + "/andresultsTXTfiles"
+#path = currPath + "/andresultsTXTfiles"
+path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
 diction_h ={'dummy':[]};
@@ -67,8 +69,23 @@ diction_h.pop('dummy',None);
 
 #print(diction_c['grade 3'][2][1]);
 
-
-
+#for key in 
+for key in diction_h:
+    #print key;
+    data = np.array(diction_h[key]);
+    for cIndex in range(0,12):
+        mask=np.all([data[:,cIndex] != 99 , data[:,cIndex] != -1],axis = 0);
+        md = int(stats.mode(data[mask,cIndex])[0][0]);
+        data[np.invert(mask),cIndex] = md
+    diction_h[key] =data;
+for key in diction_c:
+    #print key;
+    data = np.array(diction_c[key]);
+    for cIndex in range(0,12):
+        mask=np.all([data[:,cIndex] != 99 , data[:,cIndex] != -1],axis = 0);
+        md = int(stats.mode(data[mask,cIndex])[0][0]);
+        data[np.invert(mask),cIndex] = md
+    diction_c[key] = data;    
 chi_map = {}
 
 
