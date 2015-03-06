@@ -7,8 +7,8 @@ import operator
 from scipy import stats
 currPath = os.path.dirname(__file__)
 #print(s)
-#path = currPath + "/andresultsTXTfiles"
-path = "/home/bikramka/Downloads/andresultsTXTfiles";
+path = currPath + "/andresultsTXTfiles"
+#path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
 diction_h ={'dummy':[]};
