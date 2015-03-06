@@ -2,8 +2,12 @@ import os, sys
 from os.path import isfile, join
 import numpy as np
 import scipy.stats
-
-path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
+import pickle
+import operator
+currPath = os.path.dirname(__file__)
+#print(s)
+path = currPath + "/andresultsTXTfiles"
+#path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
 diction_h ={'dummy':[]};
 diction_c ={'dummy':[]};
@@ -61,20 +65,25 @@ for year in dirs:
 diction_c.pop('dummy',None);
 diction_h.pop('dummy',None);
 
-print(diction_c['grade 3'][2][1]);
+#print(diction_c['grade 3'][2][1]);
 
 
 
-for x in diction_h:
-    l = len(diction_h[x])
+chi_map = {}
+
+
+for key in diction_h:
+    #Num of rows for that Grade
+    l = len(diction_h[key])
+    #Initializes the array (Max domain val of a Variable is 5)
     a = np.zeros(shape=(6,6))
     for i in range(1,2):
         maxRow = 0
         maxCol = 0
         for j in range(0,l):
             #Finding Indexes
-            i1 = diction_h[x][j][i-1]
-            i2 = diction_h[x][j][i]
+            i1 = diction_h[key][j][i-1]
+            i2 = diction_h[key][j][i]
             #Will remove this part
             if i1 == 99 or i1 == -1 or i1 == 5:
                 i1 = 1
@@ -92,20 +101,39 @@ for x in diction_h:
         total = np.sum(colSum)
         exp = np.zeros(shape=(maxRow+1,maxCol+1))
         obs = np.zeros(shape=(maxRow+1,maxCol+1))
+          
         for k in range(0,maxRow+1):
             for j in range(0,maxCol+1):
-               obs[k][j] = a[k][j]
-               exp[k][j] = (colSum[j]*rowSum[k])/total
-        chi = scipy.stats.chisquare(obs,exp)    
-    break
-print(chi)
-print(exp)
+                if a[k][j] == 0:
+                    obs[k][j] = 1
+                else:
+                    obs[k][j] = a[k][j]
+                    
+                if colSum[j] == 0:
+                    colSum[j] = maxRow
+                if rowSum[k] == 0:
+                    rowSum[k] = maxCol
+                    
+                exp[k][j] = (colSum[j]*rowSum[k])/total
+        
+        c = np.square(np.array(obs)-np.array(exp))/exp
+        chi = np.sum(c)
+        chi_map[key + "-" + str(i-1) + "-" + str(i)] = chi   
+        
+        
+        
+print(chi_map)
+sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
+print(sorted_x)
+pickle.dump( sorted_x, open( currPath+"/chiValues.p", "wb" ) )
+#
+#print(obs)  
+#print(exp) 
 '''
-print(obs)        
 print(colSum)
 print(rowSum)   
 print(exp)    ''' 
 
-
+    
  
 
