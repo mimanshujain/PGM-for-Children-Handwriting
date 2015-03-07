@@ -7,8 +7,8 @@ import operator
 from scipy import stats
 currPath = os.path.dirname(__file__)
 
-path = currPath + "/andresultsTXTfiles"
-#path = "/home/bikramka/Downloads/andresultsTXTfiles";
+#path = currPath + "/andresultsTXTfiles"
+path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
 diction_h ={'dummy':[]};
@@ -203,11 +203,12 @@ for key in diction_h:
         s = np.double(s);
         
         marginal_table_values = marginal_table_values/s;
+        marginal_table1 = np.zeros(marginal_table.shape, dtype = np.double);
        # print marginal_table_value;
         for j in range(0, len(marginal_table_values)):
-            print j
-            marginal_table[j,1] = marginal_table_values[j];
-        marginal[i] = marginal_table
+            marginal_table1[j,0] = marginal_table[j,0]
+            marginal_table1[j,1] = np.double(marginal_table_values[j]);
+        marginal[i] = marginal_table1
     grade_marginal[key] = marginal     
 
                  
@@ -228,20 +229,11 @@ for k in sor_map:
     #print(adj_mat);
     adj_map[k] = adj_mat;
     
-    
-    
-#
-#print(obs)  
-#print(exp) 
-'''
-print(colSum)
-print(rowSum)   
-print(exp)    ''' 
-
-
-    
-
- 
-
-#for key in grade_ma    
-
+#code for joint probabilities
+conditionals = dict()
+for k in adj_map:
+    for i in range(0,12):
+        for j in range(0,12):
+            if adj_map[k][i][j] == 1:
+                print
+                
