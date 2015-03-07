@@ -88,7 +88,7 @@ for key in diction_c:
     diction_c[key] = data;    
 chi_map = {}
 
-
+grade_map = {}
 for key in diction_h:
     #Num of rows for that Grade
     l = len(diction_h[key])
@@ -137,13 +137,21 @@ for key in diction_h:
             
             c = np.square(np.array(obs)-np.array(exp))/exp
             chi = np.sum(c)
-            chi_map[key + "-" + str(y) + "-" + str(i)] = chi   
+            chi_map[str(y) + "-" + str(i)] = chi   
+      
+    grade_map[key] = chi_map  
         
-        
-        
-sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
-pickle.dump( sorted_x, open( currPath+"/chiValues.p", "wb" ) )
-print(len(sorted_x))
+sor_map = {}    
+for k in grade_map:
+    sorted_x = sorted(grade_map[k].items(), key=operator.itemgetter(1))   
+    sor_map[k] = sorted_x
+                 
+#sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
+pickle.dump(sor_map, open( currPath+"/chiValues.p", "wb" ) )
+print(len(sor_map))
+for k in sor_map:
+    print(k)
+    #print(len(sor_map[k]))
 #
 #print(obs)  
 #print(exp) 
