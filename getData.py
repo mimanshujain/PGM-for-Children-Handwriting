@@ -6,7 +6,7 @@ import pickle
 import operator
 from scipy import stats
 currPath = os.path.dirname(__file__)
-#print(s)
+
 path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
@@ -177,6 +177,7 @@ sor_map = {}
 for k in grade_map:
     sorted_x = sorted(grade_map[k].items(), key=operator.itemgetter(1))   
     sor_map[k] = sorted_x
+
                                         
 ##sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
 #pickle.dump(sor_map, open( currPath+"/chiValues.p", "wb" ) )
@@ -208,6 +209,38 @@ for key in diction_h:
             marginal_table[j,1] = marginal_table_values[j];
         marginal[i] = marginal_table
     grade_marginal[key] = marginal     
+
+                 
+#sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
+pickle.dump(sor_map, open( currPath+"/chiValues.p", "wb" ) )
+#print(len(sor_map))
+adj_map = dict();
+for k in sor_map:
+    c_m = sor_map[k];
+    c_m = c_m[-15:];
+    adj_mat = np.zeros((12,12),dtype = np.int);
+    for t in c_m:
+        ijs = t[0].split('-');
+        i = int(ijs[0]);
+        j = int(ijs[1]);
+        adj_mat[i][j] = np.int(1);
+        adj_mat[j][i] = np.int(1);
+    #print(adj_mat);
+    adj_map[k] = adj_mat;
+    
+    
+    
+#
+#print(obs)  
+#print(exp) 
+'''
+print(colSum)
+print(rowSum)   
+print(exp)    ''' 
+
+
+    
+
  
 
 #for key in grade_ma    
