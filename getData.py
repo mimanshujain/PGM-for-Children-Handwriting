@@ -86,16 +86,22 @@ for key in diction_c:
         md = int(stats.mode(data[mask,cIndex])[0][0]);
         data[np.invert(mask),cIndex] = md
     diction_c[key] = data;    
+
+
 chi_map = {}
 
 grade_map = {}
+#grade_marg_map = {}
 for key in diction_h:
     #Num of rows for that Grade
     l = len(diction_h[key])
     #Initializes the array (Max domain val of a Variable is 5)
     a = np.zeros(shape=(6,6))
-    for i in range(1,12):        
+    #lowMargMap = {}
+    for i in range(1,12):           
+        count = 1    
         for y in range(0,i):
+            #marg_map = {} 
             maxRow = 0
             maxCol = 0
             for j in range(0,l):
@@ -103,11 +109,22 @@ for key in diction_h:
                 i1 = diction_h[key][j][y]
                 i2 = diction_h[key][j][i]
                 
+                #calculate the marginal prob
+                #if count == 1:
+                    #if marg_map.has_key(i2):
+                    #    val = marg_map.get(i2)
+                    #    val = val + 1
+                    #    marg_map.update({i2:val})
+                    #else:
+                    #    marg_map[i2] = 1
+                        
+                
                 #Will remove this part
-                if i1 == 99 or i1 == -1 or i1 == 5:
+                if i1 == 99 or i1 == -1:
                     i1 = 1
-                if i2 == 99 or i2 == -1 or i2 == 5:
+                if i2 == 99 or i2 == -1:
                     i2 = 1
+                
                 #Finding the max values
                 if maxRow < i1:
                     maxRow = i1
@@ -115,6 +132,7 @@ for key in diction_h:
                     maxCol = i2
                 a[i1][i2] = a[i1][i2] + 1         
             
+            #out j loop                
             colSum = np.sum(a, axis=0)
             rowSum = np.sum(a, axis=1)
             total = np.sum(colSum)
@@ -138,28 +156,59 @@ for key in diction_h:
             c = np.square(np.array(obs)-np.array(exp))/exp
             chi = np.sum(c)
             chi_map[str(y) + "-" + str(i)] = chi   
-      
+            #count = count + 1
+        #out y loop  
+        #lowMargMap[i] = marg_map
+        
+    #out i loop     
+    
+    #Normalization of Marginal Probs
+    #for x in lowMargMap:
+    #    sum_i = 0
+    #    for z in lowMargMap[x]:
+    #       sum_i = sum_i + lowMargMap[x][z]
+    #    for z in lowMargMap[x]:
+    #        lowMargMap.update({z:lowMargMap[x][z]/sum_i})
+            
+    #grade_marg_map[key] =  lowMargMap 
     grade_map[key] = chi_map  
         
 sor_map = {}    
 for k in grade_map:
     sorted_x = sorted(grade_map[k].items(), key=operator.itemgetter(1))   
     sor_map[k] = sorted_x
-                 
-#sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
-pickle.dump(sor_map, open( currPath+"/chiValues.p", "wb" ) )
-print(len(sor_map))
-for k in sor_map:
-    print(k)
-    #print(len(sor_map[k]))
-#
-#print(obs)  
-#print(exp) 
-'''
-print(colSum)
-print(rowSum)   
-print(exp)    ''' 
-
-    
+                                        
+##sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
+#pickle.dump(sor_map, open( currPath+"/chiValues.p", "wb" ) )
+#print(len(sor_map))
+#for k in sor_map:
+#    print(k)
+#    #print(len(sor_map[k]))
+##
+##print(obs)  
+##print(exp) 
+#'''
+#print(colSum)
+#print(rowSum)   
+#print(exp)    ''' 
+marginal = dict()
+grade_marginal = dict()
+for key in diction_h:
+    dat=diction_h[key];
+    for i in range(0,12):
+        marginal_table = stats.itemfreq(dat[:,i])
+        marginal_table_values = marginal_table[:,1]
+        s = len(dat)
+        s = np.double(s);
+        
+        marginal_table_values = marginal_table_values/s;
+       # print marginal_table_value;
+        for j in range(0, len(marginal_table_values)):
+            print j
+            marginal_table[j,1] = marginal_table_values[j];
+        marginal[i] = marginal_table
+    grade_marginal[key] = marginal     
  
+
+#for key in grade_ma    
 
