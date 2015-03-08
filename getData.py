@@ -8,8 +8,8 @@ from scipy import stats
 currPath = os.path.dirname(__file__)
 
 def calculateJoin(grade_marginal, Xi, Xj, key):
-    iMarginal = grade_marginal[key][i];
-    jMarginal = grade_marginal[key][j];
+    iMarginal = grade_marginal[key][Xi];
+    jMarginal = grade_marginal[key][Xj];
     cond = dict();
     for iIndex in iMarginal:
         #iIndexInt = int(iIndex);
@@ -68,6 +68,20 @@ def calculateConditional(marginal, given):
         cond[key] = cond[key]/givenValue;
             
     return cond
+    
+def calculateConditionalQuery(query, grade_marginal, key):
+    values = query.split('|');
+    givens = values[1].split(',');
+    if len(givens) == 1:
+        cond = calculateConditional(grade_marginal[key][values[0]],grade_marginal[key][givens[0]]);
+    else:
+        cond = grade_marginal[key][0]
+        for i in range(1, len(givens)):
+            cond = calculateJoinMarginal(cond, grade_marginal[key][i])
+        cond = calculateConditional(grade_marginal[key][values[0]], cond);
+    return cond;
+            
+            
 path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
