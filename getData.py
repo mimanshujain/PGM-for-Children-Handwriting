@@ -8,16 +8,17 @@ from scipy import stats
 currPath = os.path.dirname(__file__)
 
 #Joint prob with dictionary as output like 0,0 or 0,1
+
 def calculateJoin(grade_marginal, Xi, Xj, key):
     iMarginal = grade_marginal[key][i];
     jMarginal = grade_marginal[key][j];
     cond = dict();
-    for iIndex in range(0,len(iMarginal)):
-        iIndexInt = int(iIndex);
-        for jIndex in range(0,len(jMarginal)):
-            jIndexInt = int(jIndex)
-            k1 = str(iIndexInt) + ',' + str(jIndexInt)
-            cond[k1] = iMarginal[iIndex,1]*jMarginal[jIndex,1]
+    for iIndex in iMarginal:
+        #iIndexInt = int(iIndex);
+        for jIndex in jMarginal:
+           # jIndexInt = int(jIndex)
+            k1 = str(iIndex) + ',' + str(jIndex)
+            cond[k1] = iMarginal[iIndex]*jMarginal[jIndex]
             
     return cond
 
@@ -26,12 +27,12 @@ def calculateJoinMarginal(marginal1, marginal2):
     iMarginal = marginal1;
     jMarginal = marginal2;
     cond = dict();
-    for iIndex in range(0,len(iMarginal)):
-        iIndexInt = int(iIndex);
-        for jIndex in range(0,len(jMarginal)):
-            jIndexInt = int(jIndex)
-            k1 = str(iIndexInt) + ',' + str(jIndexInt)
-            cond[k1] = iMarginal[iIndex,1]*jMarginal[jIndex,1]
+    for iIndex in iMarginal:
+        #iIndexInt = int(iIndex);
+        for jIndex in jMarginal:
+           # jIndexInt = int(jIndex)
+            k1 = str(iIndex) + ',' + str(jIndex)
+            cond[k1] = iMarginal[iIndex]*jMarginal[jIndex]
             
     return cond
     
@@ -50,6 +51,26 @@ def calculateAdj(sor_map):
         #print(adj_mat);
         adj_map[k] = adj_mat;
     return adj_map;
+
+def calculateConditional(marginal, given):
+    iMarginal = marginal;
+    jMarginal = given;
+    cond = dict();
+    for iIndex in iMarginal:
+        #iIndexInt = int(iIndex);
+        for jIndex in jMarginal:
+           # jIndexInt = int(jIndex)
+            k1 = str(iIndex) + '|' + str(jIndex)
+            cond[k1] = iMarginal[iIndex]*jMarginal[jIndex]
+    for key in cond:
+        key = str(key);
+        givenValueKey = key.split('|')[1];
+        if givenValueKey not in given:
+            print("aa")
+        givenValue = given[givenValueKey];
+        cond[key] = cond[key]/givenValue;
+            
+    return cond
 
 path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
@@ -209,13 +230,18 @@ for key in diction_h:
         s = np.double(s);
         
         marginal_table_values = marginal_table_values/s;
-        marginal_table1 = np.zeros(marginal_table.shape, dtype = np.double);
+        marginal_table1 = dict();
        # print marginal_table_value;
         for j in range(0, len(marginal_table_values)):
             marginal_table[j,1] = marginal_table_values[j];
             marginal[i] = marginal_table
             marginal_table1[j,0] = marginal_table[j,0]
             marginal_table1[j,1] = np.double(marginal_table_values[j]);
+
+            jk = str(marginal_table[j,0]);
+            marginal_table1[jk] = np.double(marginal_table_values[j]);
+            #marginal_table1[j,1] = np.double(marginal_table_values[j]);
+
         marginal[i] = marginal_table1
     grade_marginal[key] = marginal     
 
@@ -233,16 +259,45 @@ for key in adj_map:
     for i in range(0,12):
         for j in range(0,12):
             if adj_map[key][i][j] == 1:
-                cond = calculateJoinMarginal(grade_marginal[key][i],grade_marginal[key][j])
+                #cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
+                cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
         k = str(i)+'|'+str(j)
         if key in conditionals:
             conditionals[key][k] = cond;
         else:
             conditionals[key] = {k:cond};
-        
+    
         
 G = np.zeros((12,12),dtype = np.int);
 
+def calculateScore(G_star, key, l, ):
+    biggerSum = 0.0
+    for i in range(0,l):
+        smallerSum = 0.0
+        for j in range(0,12):                                    
+            parents = G_star[key][j]
+            if len(parents) > 0:
+                probKey = ""
+                valueQuery = ""
+                for par in range(0,len(parents)):
+                    if parents[par] == 1:
+                        if probKey == "":
+                            probKey = str(par)
+                            valueQuery = str(diction_h[key][i][par])
+                        else:
+                            probKey = probKey + "," + str(par);
+                            valueQuery = valueQuery + "," + str(diction_h[key][i][par])
+                            
+                probKey = str(j)+"|"+probKey
+                valueQuery = str(diction_h[key][i][j]) + "|" + valueQuery
+                cond = calculateConditionalQuery(probKey, grade_marginal, key)                
+                smallerSum = smallerSum + cond[valueQuery]
+            else:
+                smallerSum = smallerSum + grade_marginal[key][j].get(diction_h[key][i][j])
+        #End of j loop
+        biggerSum = biggerSum + smallerSum  
+    return biggerSum
+    
 for key in sor_map:
     d_m = sor_map[key];
     d_m = d_m[-15:];    
@@ -251,20 +306,21 @@ for key in sor_map:
         vertex1 = int(ijs[0]);
         vertex2 = int(ijs[1]);
         l = len(diction_h[key])
-        for i in range(0,l):
-            for j in range(0,12):
-                parents = adj_map[key][j]
-                probKey = ""
-                for par in range(0,len(parents)):
-                    if parents[par] == 1:
-                        if probKey == "":
-                            probKey = str(par)
-                        else:
-                            probKey = probKey + "," + str(par);
-                probKey = str(j)+"|"+probKey
-                print(probKey)
-            #End of j loop
-            
+        
+        G_star1 = G
+        G_star2 = G
+        G_star1[vertex1] = 1 #Vertex 2 is the parent       
+        G_star1[vertex2] = 1 #Vertex 1 is the parent       
+        sum1 = calculateScore(G_star1, key, l)  
+        sum2 = calculateScore(G_star2, key, l)       
+        
+        sum1 = -np.log(sum1)
+        sum2 = -np.log(sum2)
+        
+        if sum1 < sum2:
+            G = G_star1
         #End of i loop
      #End of t loop                                       
 #End of Key loop
+
+
