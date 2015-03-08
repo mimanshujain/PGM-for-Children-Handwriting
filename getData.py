@@ -9,9 +9,10 @@ currPath = os.path.dirname(__file__)
 
 #Joint prob with dictionary as output like 0,0 or 0,1
 
+conditionals_g = dict()
 def calculateJoin(grade_marginal, Xi, Xj, key):
-    iMarginal = grade_marginal[key][i];
-    jMarginal = grade_marginal[key][j];
+    iMarginal = grade_marginal[key][Xi];
+    jMarginal = grade_marginal[key][Xj];
     cond = dict();
     for iIndex in iMarginal:
         #iIndexInt = int(iIndex);
@@ -65,13 +66,37 @@ def calculateConditional(marginal, given):
     for key in cond:
         key = str(key);
         givenValueKey = key.split('|')[1];
-        if givenValueKey not in given:
-            print("aa")
+        #if givenValueKey not in given:
+        #    print("aa")
         givenValue = given[givenValueKey];
         cond[key] = cond[key]/givenValue;
             
     return cond
 
+path = currPath + "/andresultsTXTfiles"
+#path = "/home/bikramka/Downloads/andresultsTXTfiles";
+
+    
+def calculateConditionalQuery(query, grade_marginal, key):
+    global conditionals_g;
+    if query in conditionals_g:
+        return conditionals_g[query]
+    values = query.split('|');
+    givens = values[1].split(',');
+    if len(givens) == 1:
+        cond = calculateConditional(grade_marginal[key][values[0]],grade_marginal[key][givens[0]]);
+    else:
+        cond = grade_marginal[key][0]
+        for i in range(1, len(givens)):
+            cond = calculateJoinMarginal(cond, grade_marginal[key][i])
+        cond = calculateConditional(grade_marginal[key][int(values[0])], cond);
+    conditionals_g[query] = cond;
+    return cond;
+    
+def calcConditionalValues(cond, valueQuery):
+    returnValue = cond[valueQuery];
+    return returnValue;
+            
 path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
@@ -267,7 +292,6 @@ for key in adj_map:
         else:
             conditionals[key] = {k:cond};
     
-        
 G = np.zeros((12,12),dtype = np.int);
 
 def calculateScore(G_star, key, l, ):
@@ -324,3 +348,4 @@ for key in sor_map:
 #End of Key loop
 
 
+calculateConditionalQuery('1|2,11', grade_marginal, 'grade 2');
