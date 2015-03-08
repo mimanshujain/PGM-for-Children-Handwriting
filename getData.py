@@ -81,13 +81,12 @@ def calculateConditionalQuery(query, grade_marginal, key):
         cond = grade_marginal[key][0]
         for i in range(1, len(givens)):
             cond = calculateJoinMarginal(cond, grade_marginal[key][i])
-        cond = calculateConditional(grade_marginal[key][values[0]], cond);
+        cond = calculateConditional(grade_marginal[key][int(values[0])], cond);
     conditionals_g[query] = cond;
     return cond;
             
-            
-path = currPath + "/andresultsTXTfiles"
-#path = "/home/bikramka/Downloads/andresultsTXTfiles";
+#path = currPath + "/andresultsTXTfiles"
+path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
 diction_h ={'dummy':[]};
@@ -315,3 +314,4 @@ for key in adj_map:
             conditionals[key] = {k:cond};
     
         
+calculateConditionalQuery('1|2,11', grade_marginal, 'grade 2');
