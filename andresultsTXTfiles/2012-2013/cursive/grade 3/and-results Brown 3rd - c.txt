@@ -1,0 +1,23 @@
+CTV1
+AiM2022Mu 12-13 and cursive, less than five samples
+AlA2022Ro 12-13 and cursive, 1, 0, 2, 1, 1, 1, 0, 99, 1, 99, 99, 0, 0, 0, 
+AlM2022Va 12-13 and cursive, less than five samples
+AsC2022Sm 12-13 and cursive, less than five samples
+BrE2022Ba 12-13 and cursive, less than five samples 
+BrR222Ba 12-13 and cursive, 1, 0, 1, 0, 0, 1, 2, 2, 1, 1, 99, 1, 1, 1, 
+BrT2022To 12-13 and cursive, 1, 0, 1, 2, 1, 1, 0, 2, 1, 0, 99, 1, 0, 1, 
+CaA2022Ki 12-13 and cursive, less than five samples 
+DaK2022Va 12-13 and cursive, less thn five samples
+EmJ2022Sl 12-13 and cursive, 1, 0, 1, 1, 1, 1, 2, 1, 0, 0, 99, 1, 1, 1, 
+He_2022We 12-13 and cursive, 1, 0, 1, 1, 1, 1, 2, 1, 2, 2, 99, 2, 0, 0, 
+IsJ2022Mu 12-13 and cursive, 1, 0, 1, 1, 1, 1, 2, 0, 1, 2, 99, 1, 2, 1, 
+IzS2022Mu 12-13 and cursive, less than five samples
+JaM2022Sa 12-13 and cursive, less than five samples
+JaC2022Ca 12-13 and cursive, less than five samples 
+MeG2022Fr 12-13 and cursive, 1, 0, 1, 1, 0, 1, 2, 2, 1, 0, 99, 1, 1, 0, 
+PaL2022Fl 12-13 and cursive, 1, 0, 2, 2, 1, 1, 2, 2, 1, 0, 99, 1, 1, 1, 
+RaO2022Kh 12-13 and cursive, 1, 0, 1, 1, 1, 1, 2, 1, 0, 0, 99, 1, 1, 0, 
+RiM2022No 12-13 and cursive, less than five samples
+ShF2022Ku 12-13 and cursive, 1, 0, 1, 1, 1, 1, 2, 1, 2, 1, 99, 2, 1, 1, 
+Th_2022Ja 12-13 and cursive, 1, 0, 1, 0, 1, 1, 2, 2, 0, 0, 99, 1, 1, 1, 
+YiF2022Gu 12-13 and cursive, less than five samples 

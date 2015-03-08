@@ -1,0 +1,17 @@
+CTV1
+CaD2022SP 12-13 and cursive, 1, 0, 99, 1, 0, 3, 2, 2, 0, 99, 99, 1, 1, 1, 
+ChP2022Fo 12-13 and cursive, less than five samples
+CoJ2022Mo 12-13 and cursive, less than five samples
+DiK2022Yi 12-13 and cursive, 1, 0, 99, 99, 1, 1, 99, 1, 0, 0, 99, 0, 0, 1, 
+EdJ2022Pu 12-13 and crusive, 1, 0, 2, 1, 0, 1, 0, 2, 0, 99, 99, 99, 99, 99, 
+ElA2022Fl 12-13 and cursive, 1, 0, 2, 1, 0, 1, 2, 1, 1, 0, 99, 2, 2, 1, 
+ElR2022He 12-13 and cursive, 1, 0, 2, 1, 1, 1, 99, 99, 0, 99, 99, 99, 1, 99, 
+IsA2022Jo 12-13 and cursive, 1, 0, 2, 1, 0, 1, 2, 1, 0, 0, 99, 1, 0, 0, 
+LoR2022Mu 12-13 and cursive, 1, 0, 2, 1, 1, 1, 0, 2, 0, 0, 99, 1, 0, 0, 
+MaN2022St 12-13 and cursive, 1, 0, 2, 1, 0, 1, 2, 2, 0, 99, 99, 1, 1, 1, 
+MaN2022Wh 12-13 and cursive, 1, 0, 2, 1, 99, 1, 99, 2, 0, 0, 99, 0, 0, 99, 
+MeE2022Sc 12-13 and cursive, 1, 0, 2, 1, 1, 1, 99, 99, 0, 0, 99, 1, 1, 1, 
+NyJ2022Co 12-13 and cursive, 1, 0, 99, 1, 1, 1, 2, 2, 99, 0, 1, 1, 99, 99, 
+RyM2022Si 12-13 and cursive, 1, 0, 2, 1, 1, 1, 2, 1, 1, 99, 99, 2, 2, 1, 
+SaC2022Mo 12-13 and cursive, 1, 0, 2, 1, 0, 1, 2, 99, 1, 99, 99, 1, 1, 1, 
+SaJ2022Ha 12-13 and cursive, 1, 0, 1, 1, 1, 1, 99, 1, 0, 99, 99, 1, 1, 1, 

@@ -1,0 +1,24 @@
+AbG2020Ra 12-13 and cursive, 0, 2, 1, 0, 1, 2, 1, 0, 2, 2, 0, 0, 0, 
+AnK2020Ly 12-13 and cursive, 0, 2, 1, 0, 1, 3, 3, 1, 2, 2, 2, 0, 0, 
+AnM2020Ju 12-13 and cursive, 0, 0, 1, 0, 1, 2, -1, 1, 3, 2, 0, 0, 0, 
+ArV2020Ma 12-13 and cursive, less than five samples
+AuJ2020Ho 12-13 and cursive, less than five samples 
+CaM2020Tu 12-13 and cursive, 0, 2, 1, 1, 1, 0, 2, 0, 4, 2, 0, 0, 0, 
+CoE2020Th 12-13 and cursive, 0, 2, 1, 1, 1, 0, 1, 0, 2, 2, 0, 0, 0, 
+Da 2020Je 12-13 and cursive, 0, 2, 1, 1, 0, 0, 1, 0, 4, 2, 0, 0, 3, 
+EeJ2020Be 12-13 and cursive, less than five samples
+ElJ2020Mo 12-13 and cursive, less than five samples
+ElM2020Ma 12-13 and cursive, 0, 2, 1, 1, 1, 0, 2, 0, 4, 2, 2, 3, 0, 
+FrR2020ro 12-13 and cursive, 0, 2, 1, 0, 1, 3, 1, 0, 2, 2, 3, 0, 0, 
+GwN2020Ha 12-13 and cursive, 0, 2, 1, 1, 1, 0, 1, 0, 0, 2, 2, 0, 0, 
+JoM2020Ni 12-13 and cursive, 0, 1, 1, 1, 1, 3, 1, 0, 0, 2, 0, 0, 0, 
+KaA2020Br 12-13 and cursive, 0, 2, 1, 1, 1, 0, 2, 0, 0, 2, 3, 0, 2, 
+KoD2020Gr 12-13 and cursive, not legible 
+MaS2020Pa 12-13 and cursive, 0, 2, 1, 0, 1, 2, 1, 1, 4, 2, 0, 0, 3, 
+McG2020To 12-13 and cursive, less than five samples
+NaB2020Os 12-13 and cursive, 0, 2, 1, 0, 1, 3, 2, 3, 0, 2, 2, 0, 0, 
+QuS2020Hu 12-13 and cursive, 0, 2, 1, 0, 0, 0, 1, 3, 4, 2, 3, 0, 0, 
+RiR2020Ha 12-13 and cursive, 0, 2, 1, 1, 1, 0, 1, 0, 4, 2, 0, 0, 2, 
+RyA2020Sp 12-13 and cursive, 0, 2, 1, 0, 1, 0, 3, 0, 1, 2, 0, 0, 0, 
+TeC2020Ra 12-13 and cursive, less than five samples 
+TrI2020Mc 12-13 and cursive, 0, 2, 1, 1, 0, 2, 3, 1, 4, 2, 2, 2, 0, 
