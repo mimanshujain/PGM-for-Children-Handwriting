@@ -247,9 +247,9 @@ for key in adj_map:
                         #jIndexInt = int(jIndex)
                         cond[iIndex,jIndex] = iMarginal[iIndex,1]*jMarginal[jIndex,1]
         k = str(i)+'|'+str(j)
-        condMap = tuple((k,cond))
+        #condMap = tuple((k,cond))
         if key in conditionals:
-            conditionals[key].append(condMap);
+            conditionals[key][k] = cond;
         else:
-            conditionals[key] = [condMap];
+            conditionals[key] = {k:cond};
         
