@@ -231,9 +231,25 @@ for k in sor_map:
     
 #code for joint probabilities
 conditionals = dict()
-for k in adj_map:
+#grade is key
+#value: list of tuple('Xi|Xj', condMap)
+for key in adj_map:
+    #print k;
     for i in range(0,12):
         for j in range(0,12):
-            if adj_map[k][i][j] == 1:
-                print
-                
+            if adj_map[key][i][j] == 1:
+                iMarginal = grade_marginal[key][i];
+                jMarginal = grade_marginal[key][j];
+                cond = np.zeros((len(iMarginal), len(jMarginal)), dtype = np.double);
+                for iIndex in range(0,len(iMarginal)):
+                    #iIndexInt = int(iIndex);
+                    for jIndex in range(0,len(jMarginal)):
+                        #jIndexInt = int(jIndex)
+                        cond[iIndex,jIndex] = iMarginal[iIndex,1]*jMarginal[jIndex,1]
+        k = str(i)+'|'+str(j)
+        condMap = tuple((k,cond))
+        if key in conditionals:
+            conditionals[key].append(condMap);
+        else:
+            conditionals[key] = [condMap];
+        
