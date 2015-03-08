@@ -6,7 +6,7 @@ import pickle
 import operator
 from scipy import stats
 currPath = os.path.dirname(__file__)
-
+conditionals_g = dict()
 def calculateJoin(grade_marginal, Xi, Xj, key):
     iMarginal = grade_marginal[key][Xi];
     jMarginal = grade_marginal[key][Xj];
@@ -62,14 +62,17 @@ def calculateConditional(marginal, given):
     for key in cond:
         key = str(key);
         givenValueKey = key.split('|')[1];
-        if givenValueKey not in given:
-            print("aa")
+        #if givenValueKey not in given:
+        #    print("aa")
         givenValue = given[givenValueKey];
         cond[key] = cond[key]/givenValue;
             
     return cond
     
 def calculateConditionalQuery(query, grade_marginal, key):
+    global conditionals_g;
+    if query in conditionals_g:
+        return conditionals_g[query]
     values = query.split('|');
     givens = values[1].split(',');
     if len(givens) == 1:
@@ -79,6 +82,7 @@ def calculateConditionalQuery(query, grade_marginal, key):
         for i in range(1, len(givens)):
             cond = calculateJoinMarginal(cond, grade_marginal[key][i])
         cond = calculateConditional(grade_marginal[key][values[0]], cond);
+    conditionals_g[query] = cond;
     return cond;
             
             
