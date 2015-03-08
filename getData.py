@@ -84,6 +84,10 @@ def calculateConditionalQuery(query, grade_marginal, key):
         cond = calculateConditional(grade_marginal[key][int(values[0])], cond);
     conditionals_g[query] = cond;
     return cond;
+    
+def calcConditionalValues(cond, valueQuery):
+    returnValue = cond[valueQuery];
+    return returnValue;
             
 #path = currPath + "/andresultsTXTfiles"
 path = "/home/bikramka/Downloads/andresultsTXTfiles";
