@@ -68,8 +68,8 @@ def calculateConditional(marginal, given):
         cond[key] = cond[key]/givenValue;
             
     return cond
-#path = currPath + "/andresultsTXTfiles"
-path = "/home/bikramka/Downloads/andresultsTXTfiles";
+path = currPath + "/andresultsTXTfiles"
+#path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
 diction_h ={'dummy':[]};
