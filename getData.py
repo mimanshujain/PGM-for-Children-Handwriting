@@ -7,6 +7,48 @@ import operator
 from scipy import stats
 currPath = os.path.dirname(__file__)
 
+def calculateJoin(grade_marginal, Xi, Xj):
+    iMarginal = grade_marginal[key][i];
+    jMarginal = grade_marginal[key][j];
+    cond = dict();
+    for iIndex in range(0,len(iMarginal)):
+        iIndexInt = int(iIndex);
+        for jIndex in range(0,len(jMarginal)):
+            jIndexInt = int(jIndex)
+            k1 = str(iIndexInt) + ',' + str(jIndexInt)
+            cond[k1] = iMarginal[iIndex,1]*jMarginal[jIndex,1]
+            
+    return cond
+    
+def calculateJoinMarginal(marginal1, marginal2):
+    iMarginal = marginal1;
+    jMarginal = marginal2;
+    cond = dict();
+    for iIndex in range(0,len(iMarginal)):
+        iIndexInt = int(iIndex);
+        for jIndex in range(0,len(jMarginal)):
+            jIndexInt = int(jIndex)
+            k1 = str(iIndexInt) + ',' + str(jIndexInt)
+            cond[k1] = iMarginal[iIndex,1]*jMarginal[jIndex,1]
+            
+    return cond
+    
+def calculateAdj(sor_map):
+    adj_map = dict();
+    for k in sor_map:
+        c_m = sor_map[k];
+        c_m = c_m[-15:];
+        adj_mat = np.zeros((12,12),dtype = np.int);
+        for t in c_m:
+            ijs = t[0].split('-');
+            i = int(ijs[0]);
+            j = int(ijs[1]);
+            adj_mat[i][j] = np.int(1);
+            adj_mat[j][i] = np.int(1);
+        #print(adj_mat);
+        adj_map[k] = adj_mat;
+    return adj_map;
+
 #path = currPath + "/andresultsTXTfiles"
 path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
@@ -215,19 +257,7 @@ for key in diction_h:
 #sorted_x = sorted(chi_map.items(), key=operator.itemgetter(1))
 pickle.dump(sor_map, open( currPath+"/chiValues.p", "wb" ) )
 #print(len(sor_map))
-adj_map = dict();
-for k in sor_map:
-    c_m = sor_map[k];
-    c_m = c_m[-15:];
-    adj_mat = np.zeros((12,12),dtype = np.int);
-    for t in c_m:
-        ijs = t[0].split('-');
-        i = int(ijs[0]);
-        j = int(ijs[1]);
-        adj_mat[i][j] = np.int(1);
-        adj_mat[j][i] = np.int(1);
-    #print(adj_mat);
-    adj_map[k] = adj_mat;
+adj_map = calculateAdj(sor_map);
     
 #code for joint probabilities
 conditionals = dict()
@@ -238,18 +268,11 @@ for key in adj_map:
     for i in range(0,12):
         for j in range(0,12):
             if adj_map[key][i][j] == 1:
-                iMarginal = grade_marginal[key][i];
-                jMarginal = grade_marginal[key][j];
-                cond = np.zeros((len(iMarginal), len(jMarginal)), dtype = np.double);
-                for iIndex in range(0,len(iMarginal)):
-                    #iIndexInt = int(iIndex);
-                    for jIndex in range(0,len(jMarginal)):
-                        #jIndexInt = int(jIndex)
-                        cond[iIndex,jIndex] = iMarginal[iIndex,1]*jMarginal[jIndex,1]
+                cond = calculateJoinMarginal(grade_marginal[key][i],grade_marginal[key][j])
         k = str(i)+'|'+str(j)
-        #condMap = tuple((k,cond))
         if key in conditionals:
             conditionals[key][k] = cond;
         else:
             conditionals[key] = {k:cond};
+        
         
