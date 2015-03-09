@@ -6,6 +6,7 @@ import pickle
 import operator
 from scipy import stats
 from getVariableDomain import getHandPrintDomain
+
 currPath = os.path.dirname(__file__)
 
 #Joint prob with dictionary as output like 0,0 or 0,1
@@ -313,7 +314,7 @@ conditionals = dict()
 #        else:
 #            conditionals[key] = {k:cond};
 #    
-
+#
 G = np.zeros((12,12),dtype = np.int);
 cond = calculateConditionalQuery('11|1,3', grade_marginal, 'grade 2')
 def calculateScore(G_star, key, l, ):
@@ -360,8 +361,6 @@ for key in sor_map:
         vertex2 = int(ijs[1]);
         l = len(diction_h[key])
         
-        #G_star1 = np.zeros((12,12),dtype = np.int)
-        #G_star2 = np.zeros((12,12),dtype = np.int)
         G_star1 = np.array(G)
         G_star2 = np.array(G)
         G_star1[vertex1][vertex2] = 1 #Vertex 2 is the parent       
@@ -385,4 +384,39 @@ for key in sor_map:
 #End of Key loop
 
 
-calculateConditionalQuery('1|2,11', grade_marginal, 'grade 2');
+#calculateConditionalQuery('1|2,11', grade_marginal, 'grade 2');
+
+maxFeat = np.zeros(12,dtype = np.int);
+lst = getHandPrintDomain()
+i=0
+for dic in lst:
+    maxFeat[i] = len(dic)
+    i = i + 1 
+for key in diction_h:
+    gibb = np.zeros(12,dtype = np.int);
+    for i in range(0,12):
+        gibb[i] = np.random.random_integers(0,maxFeat[i])
+        
+    for i in range(0,12):
+        parents = G[i]
+        probKey = ""
+        valueQuery = ""
+        for par in range(0,len(parents)):
+            if parents[par] == 1:
+                if probKey == "":
+                    probKey = str(par)
+                    valueQuery = str(diction_h[key][i][par])
+                else:
+                    probKey = probKey + "," + str(par);
+                    valueQuery = valueQuery + "," + str(diction_h[key][i][par])
+                
+        if probKey == "":  
+            probKey = str(i)
+            valueQuery = str(diction_h[key][i][j])
+        else:
+            probKey = str(j)+"|"+probKey
+            valueQuery = str(diction_h[key][i][j]) + "|" + valueQuery
+        
+        cond = calculateConditionalQuery(probKey, grade_marginal, key)  
+          
+    
