@@ -89,9 +89,9 @@ def calculateConditionalQuery(query, grade_marginal, key):
     if len(givens) == 1:
         cond = calculateConditional(grade_marginal[key][int(values[0])],grade_marginal[key][int(givens[0])]);
     else:
-        cond = grade_marginal[key][values[0]]
+        cond = grade_marginal[key][int(givens[0])]
         for i in range(1, len(givens)):
-            cond = calculateJoinMarginal(cond, grade_marginal[key][values[i]])
+            cond = calculateJoinMarginal(cond, grade_marginal[key][int(givens[i])])
         cond = calculateConditional(grade_marginal[key][int(values[0])], cond);
     conditionals_g[query] = cond;
     return cond;
@@ -257,7 +257,7 @@ for key in diction_h:
     dat=diction_h[key];
     for i in range(0,12):
         marginal_table = stats.itemfreq(dat[:,i])
-        if key == 'grade 2' and i == 2:
+        if key == 'grade 2' and i == 0:
             print
         marginalTemplate = dict(lst[i])
         for templateValue in marginal_table[:,0]:
@@ -392,4 +392,4 @@ for key in sor_map:
 #End of Key loop
 
 
-calculateConditionalQuery('1|2,11', grade_marginal, 'grade 2');
+calculateConditionalQuery('2|0,11', grade_marginal, 'grade 2');
