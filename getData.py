@@ -73,10 +73,10 @@ def calculateConditional(marginal, given):
             
     return cond
 
-path = currPath + "/andresultsTXTfiles"
+#path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 
-    
+
 def calculateConditionalQuery(query, grade_marginal, key):
     global conditionals_g;
     if query in conditionals_g:
@@ -84,7 +84,7 @@ def calculateConditionalQuery(query, grade_marginal, key):
     values = query.split('|');
     givens = values[1].split(',');
     if len(givens) == 1:
-        cond = calculateConditional(grade_marginal[key][values[0]],grade_marginal[key][givens[0]]);
+        cond = calculateConditional(grade_marginal[key][int(values[0])],grade_marginal[key][int(givens[0])]);
     else:
         cond = grade_marginal[key][0]
         for i in range(1, len(givens)):
@@ -98,6 +98,7 @@ def calcConditionalValues(cond, valueQuery):
     return returnValue;
             
 path = currPath + "/andresultsTXTfiles"
+
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
@@ -110,9 +111,9 @@ hadprintCounnt = 0;
 #indexCursiveBadRecord = [];
 #indexHandprintBadRecord = [];
 for year in dirs:
-	hand_type =  os.listdir(path+"/"+year);
+	hand_type =  os.listdir(path+"/"+year)
 	for h_type in hand_type:
-		grade = os.listdir(path+"/"+year+"/"+h_type);
+		grade = os.listdir(path+"/"+year+"/"+h_type)
 		for g in grade:
 			files =  os.listdir(path+"/"+year+"/"+h_type+"/"+g);
 			for f in files:
@@ -176,7 +177,7 @@ for key in diction_c:
         md = int(stats.mode(data[mask,cIndex])[0][0]);
         data[np.invert(mask),cIndex] = md
     diction_c[key] = data;    
-
+                                                                                                                                                                                                                                                                                                                
 
 chi_map = {}
 
@@ -275,31 +276,30 @@ pickle.dump(sor_map, open( currPath+"/chiValues.p", "wb" ) )
 #print(len(sor_map))
 adj_map = calculateAdj(sor_map);
     
-#code for joint probabilities
-conditionals = dict()
-#grade is key
-#value: list of tuple('Xi|Xj', condMap)
-for key in adj_map:
-    #print k;
-    for i in range(0,12):
-        for j in range(0,12):
-            if adj_map[key][i][j] == 1:
-                #cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
-                cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
-        k = str(i)+'|'+str(j)
-        if key in conditionals:
-            conditionals[key][k] = cond;
-        else:
-            conditionals[key] = {k:cond};
-    
-G = np.zeros((12,12),dtype = np.int);
+##code for joint probabilities
+#conditionals = dict()
+##grade is key
+##value: list of tuple('Xi|Xj', condMap)
+#for key in adj_map:
+#    #print k;
+#    for i in range(0,12):
+#        for j in range(0,12):
+#            if adj_map[key][i][j] == 1:
+#                #cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
+#                cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
+#        k = str(i)+'|'+str(j)
+#        if key in conditionals:
+#            conditionals[key][k] = cond;
+#        else:
+#            conditionals[key] = {k:cond};
+#    
 
 def calculateScore(G_star, key, l, ):
     biggerSum = 0.0
     for i in range(0,l):
         smallerSum = 0.0
         for j in range(0,12):                                    
-            parents = G_star[key][j]
+            parents = G_star[j]
             if len(parents) > 0:
                 probKey = ""
                 valueQuery = ""
@@ -322,7 +322,9 @@ def calculateScore(G_star, key, l, ):
         biggerSum = biggerSum + smallerSum  
     return biggerSum
     
+gradeGraph = dict()    
 for key in sor_map:
+    G = np.zeros((12,12),dtype = np.int);
     d_m = sor_map[key];
     d_m = d_m[-15:];    
     for t in d_m:
@@ -333,8 +335,8 @@ for key in sor_map:
         
         G_star1 = G
         G_star2 = G
-        G_star1[vertex1] = 1 #Vertex 2 is the parent       
-        G_star1[vertex2] = 1 #Vertex 1 is the parent       
+        G_star1[vertex1][vertex2] = 1 #Vertex 2 is the parent       
+        G_star2[vertex2][vertex2] = 1 #Vertex 1 is the parent       
         sum1 = calculateScore(G_star1, key, l)  
         sum2 = calculateScore(G_star2, key, l)       
         
@@ -343,8 +345,12 @@ for key in sor_map:
         
         if sum1 < sum2:
             G = G_star1
+            
         #End of i loop
-     #End of t loop                                       
+    print(G)
+    break
+     #End of t loop   
+    gradeGraph[key] = G                                   
 #End of Key loop
 
 
