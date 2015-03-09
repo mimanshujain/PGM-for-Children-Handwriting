@@ -75,7 +75,7 @@ def calculateConditional(marginal, given):
             
     return cond
 
-#path = currPath + "/andresultsTXTfiles"
+path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 
@@ -89,8 +89,9 @@ def calculateConditionalQuery(query, grade_marginal, key):
     givens = values[1].split(',');
     if len(givens) == 1:
         cond = calculateConditional(grade_marginal[key][int(values[0])],grade_marginal[key][int(givens[0])]);
-    else:
-        cond = grade_marginal[key][int(values[0])]
+    else:       
+        cond = grade_marginal[key][int(givens[0])]
+        
         for i in range(1, len(givens)):
             cond = calculateJoinMarginal(cond, grade_marginal[key][int(givens[i])])
         cond = calculateConditional(grade_marginal[key][int(values[0])], cond);
@@ -422,3 +423,5 @@ for key in sor_map:
 #        cond = calculateConditionalQuery(probKey, grade_marginal, key)  
           
     
+calculateConditionalQuery('2|0,11', grade_marginal, 'grade 2');
+
