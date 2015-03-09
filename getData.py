@@ -73,14 +73,14 @@ def calculateConditional(marginal, given):
             
     return cond
 
-path = currPath + "/andresultsTXTfiles"
-#path = "/home/bikramka/Downloads/andresultsTXTfiles";
+#path = currPath + "/andresultsTXTfiles"
+path = "/home/bikramka/Downloads/andresultsTXTfiles";
 
     
 def calculateConditionalQuery(query, grade_marginal, key):
     global conditionals_g;
-    if query in conditionals_g:
-        return conditionals_g[query]
+    #if query in conditionals_g:
+    #    return conditionals_g[query]
     values = query.split('|');
     givens = values[1].split(',');
     if len(givens) == 1:
@@ -97,7 +97,7 @@ def calcConditionalValues(cond, valueQuery):
     returnValue = cond[valueQuery];
     return returnValue;
             
-path = currPath + "/andresultsTXTfiles"
+#path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
 dirs = os.listdir(path);
@@ -259,11 +259,13 @@ for key in diction_h:
        # print marginal_table_value;
         for j in range(0, len(marginal_table_values)):
             marginal_table[j,1] = marginal_table_values[j];
-            marginal[i] = marginal_table
-            marginal_table1[j,0] = marginal_table[j,0]
-            marginal_table1[j,1] = np.double(marginal_table_values[j]);
+            #marginal[i] = marginal_table
+            #marginal_table1[j,0] = marginal_table[j,0]
+            #marginal_table1[j,1] = np.double(marginal_table_values[j]);
 
             jk = str(marginal_table[j,0]);
+            if len(jk) > 1:
+                print
             marginal_table1[jk] = np.double(marginal_table_values[j]);
             #marginal_table1[j,1] = np.double(marginal_table_values[j]);
 
@@ -279,21 +281,21 @@ adj_map = calculateAdj(sor_map);
 conditionals = dict()
 #grade is key
 #value: list of tuple('Xi|Xj', condMap)
-for key in adj_map:
-    #print k;
-    for i in range(0,12):
-        for j in range(0,12):
-            if adj_map[key][i][j] == 1:
-                #cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
-                cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
-        k = str(i)+'|'+str(j)
-        if key in conditionals:
-            conditionals[key][k] = cond;
-        else:
-            conditionals[key] = {k:cond};
-    
+#for key in adj_map:
+#    #print k;
+#    for i in range(0,12):
+#        for j in range(0,12):
+#            if adj_map[key][i][j] == 1:
+#                #cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
+#                cond = calculateConditional(grade_marginal[key][i],grade_marginal[key][j])
+#        k = str(i)+'|'+str(j)
+#        if key in conditionals:
+#            conditionals[key][k] = cond;
+#        else:
+#            conditionals[key] = {k:cond};
+#    
 G = np.zeros((12,12),dtype = np.int);
-
+cond = calculateConditionalQuery('11|1,3', grade_marginal, 'grade 2')
 def calculateScore(G_star, key, l, ):
     biggerSum = 0.0
     for i in range(0,l):
