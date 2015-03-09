@@ -5,6 +5,7 @@ import numpy as np
 import pickle
 import operator
 from scipy import stats
+from getVariableDomain import getHandPrintDomain
 currPath = os.path.dirname(__file__)
 
 #Joint prob with dictionary as output like 0,0 or 0,1
@@ -250,6 +251,7 @@ for k in grade_map:
 
 #Calculating Marginal Prob                                                                        
 grade_marginal = dict()
+lst = getHandPrintDomain()
 for key in diction_h:
     marginal = dict()
     dat=diction_h[key];
@@ -261,6 +263,11 @@ for key in diction_h:
         
         marginal_table_values = marginal_table_values/s;
         marginal_table1 = dict();
+        marginalTemplate = dict(lst[i])
+        for templateValue in marginal_table[:,0]:
+            marginalTemplate.pop(templateValue, None);
+        for templateKey in marginalTemplate:
+            np.append(marginal_table, [[templateKey, 1]], axis = 0);
        # print marginal_table_value;
         for j in range(0, len(marginal_table_values)):
             marginal_table[j,1] = marginal_table_values[j];
@@ -273,7 +280,8 @@ for key in diction_h:
                 print
             marginal_table1[jk] = np.double(marginal_table_values[j]);
             #marginal_table1[j,1] = np.double(marginal_table_values[j]);
-
+        
+        
         marginal[i] = marginal_table1
     grade_marginal[key] = marginal     
 
