@@ -75,13 +75,15 @@ def calculateConditional(marginal, given):
 
 #path = currPath + "/andresultsTXTfiles"
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
-
+#path = "/home/bikramka/Downloads/andresultsTXTfiles";
 
 def calculateConditionalQuery(query, grade_marginal, key):
     global conditionals_g;
-    if query in conditionals_g:
-        return conditionals_g[query]
+    #if query in conditionals_g:
+    #    return conditionals_g[query]
     values = query.split('|');
+    if len(values) == 1:
+        return grade_marginal[key][int(values[0])];
     givens = values[1].split(',');
     if len(givens) == 1:
         cond = calculateConditional(grade_marginal[key][int(values[0])],grade_marginal[key][int(givens[0])]);
@@ -98,6 +100,8 @@ def calcConditionalValues(cond, valueQuery):
     return returnValue;
             
 path = currPath + "/andresultsTXTfiles"
+
+#path = currPath + "/andresultsTXTfiles"
 
 #path = "/home/bikramka/Downloads/andresultsTXTfiles";
 #path = "/home/sherlock/Dropbox/SecondSem/AML/PGM-for-Children-Handwriting/andresultsTXTfiles";
@@ -260,11 +264,13 @@ for key in diction_h:
        # print marginal_table_value;
         for j in range(0, len(marginal_table_values)):
             marginal_table[j,1] = marginal_table_values[j];
-            marginal[i] = marginal_table
-            marginal_table1[j,0] = marginal_table[j,0]
-            marginal_table1[j,1] = np.double(marginal_table_values[j]);
+            #marginal[i] = marginal_table
+            #marginal_table1[j,0] = marginal_table[j,0]
+            #marginal_table1[j,1] = np.double(marginal_table_values[j]);
 
             jk = str(marginal_table[j,0]);
+            if len(jk) > 1:
+                print
             marginal_table1[jk] = np.double(marginal_table_values[j]);
             #marginal_table1[j,1] = np.double(marginal_table_values[j]);
 
@@ -280,6 +286,12 @@ adj_map = calculateAdj(sor_map);
 #conditionals = dict()
 ##grade is key
 ##value: list of tuple('Xi|Xj', condMap)
+
+#code for joint probabilities
+conditionals = dict()
+#grade is key
+#value: list of tuple('Xi|Xj', condMap)
+
 #for key in adj_map:
 #    #print k;
 #    for i in range(0,12):
@@ -294,6 +306,8 @@ adj_map = calculateAdj(sor_map);
 #            conditionals[key] = {k:cond};
 #    
 
+G = np.zeros((12,12),dtype = np.int);
+cond = calculateConditionalQuery('11|1,3', grade_marginal, 'grade 2')
 def calculateScore(G_star, key, l, ):
     biggerSum = 0.0
     for i in range(0,l):
@@ -311,9 +325,14 @@ def calculateScore(G_star, key, l, ):
                         else:
                             probKey = probKey + "," + str(par);
                             valueQuery = valueQuery + "," + str(diction_h[key][i][par])
-                            
-                probKey = str(j)+"|"+probKey
-                valueQuery = str(diction_h[key][i][j]) + "|" + valueQuery
+                
+                if probKey == "":  
+                    probKey = str(j)
+                    valueQuery = str(diction_h[key][i][j])
+                else:          
+                    probKey = str(j)+"|"+probKey
+                    valueQuery = str(diction_h[key][i][j]) + "|" + valueQuery
+                    
                 cond = calculateConditionalQuery(probKey, grade_marginal, key)                
                 smallerSum = smallerSum + cond[valueQuery]
             else:
@@ -333,10 +352,12 @@ for key in sor_map:
         vertex2 = int(ijs[1]);
         l = len(diction_h[key])
         
-        G_star1 = G
-        G_star2 = G
+        #G_star1 = np.zeros((12,12),dtype = np.int)
+        #G_star2 = np.zeros((12,12),dtype = np.int)
+        G_star1 = np.array(G)
+        G_star2 = np.array(G)
         G_star1[vertex1][vertex2] = 1 #Vertex 2 is the parent       
-        G_star2[vertex2][vertex2] = 1 #Vertex 1 is the parent       
+        G_star2[vertex2][vertex1] = 1 #Vertex 1 is the parent       
         sum1 = calculateScore(G_star1, key, l)  
         sum2 = calculateScore(G_star2, key, l)       
         
@@ -345,6 +366,8 @@ for key in sor_map:
         
         if sum1 < sum2:
             G = G_star1
+        else:
+            G = G_star2
             
         #End of i loop
     print(G)
