@@ -90,9 +90,9 @@ def calculateConditionalQuery(query, grade_marginal, key):
     if len(givens) == 1:
         cond = calculateConditional(grade_marginal[key][int(values[0])],grade_marginal[key][int(givens[0])]);
     else:
-        cond = grade_marginal[key][0]
+        cond = grade_marginal[key][values[0]]
         for i in range(1, len(givens)):
-            cond = calculateJoinMarginal(cond, grade_marginal[key][i])
+            cond = calculateJoinMarginal(cond, grade_marginal[key][values[i]])
         cond = calculateConditional(grade_marginal[key][int(values[0])], cond);
     conditionals_g[query] = cond;
     return cond;
@@ -258,6 +258,13 @@ for key in diction_h:
     dat=diction_h[key];
     for i in range(0,12):
         marginal_table = stats.itemfreq(dat[:,i])
+        if key == 'grade 2' and i == 2:
+            print
+        marginalTemplate = dict(lst[i])
+        for templateValue in marginal_table[:,0]:
+            marginalTemplate.pop(templateValue, None);
+        for templateKey in marginalTemplate:
+            marginal_table = np.append(marginal_table, [[templateKey, 1]], axis = 0);
         marginal_table_values = marginal_table[:,1]
         s = len(dat)
         s = np.double(s);
@@ -268,7 +275,7 @@ for key in diction_h:
         for templateValue in marginal_table[:,0]:
             marginalTemplate.pop(templateValue, None);
         for templateKey in marginalTemplate:
-            np.append(marginal_table, [[templateKey, 1]], axis = 0);
+            marginal_table = np.append(marginal_table, [[templateKey, 1]], axis = 0);
        # print marginal_table_value;
         for j in range(0, len(marginal_table_values)):
             marginal_table[j,1] = marginal_table_values[j];
@@ -316,7 +323,7 @@ conditionals = dict()
 #    
 #
 G = np.zeros((12,12),dtype = np.int);
-cond = calculateConditionalQuery('11|1,3', grade_marginal, 'grade 2')
+cond = calculateConditionalQuery('11|2,3,5,8', grade_marginal, 'grade 2')
 def calculateScore(G_star, key, l, ):
     biggerSum = 0.0
     for i in range(0,l):
