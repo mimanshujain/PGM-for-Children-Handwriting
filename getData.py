@@ -90,9 +90,9 @@ def calculateConditionalQuery(query, grade_marginal, key):
     if len(givens) == 1:
         cond = calculateConditional(grade_marginal[key][int(values[0])],grade_marginal[key][int(givens[0])]);
     else:
-        cond = grade_marginal[key][values[0]]
+        cond = grade_marginal[key][int(values[0])]
         for i in range(1, len(givens)):
-            cond = calculateJoinMarginal(cond, grade_marginal[key][values[i]])
+            cond = calculateJoinMarginal(cond, grade_marginal[key][int(givens[i])])
         cond = calculateConditional(grade_marginal[key][int(values[0])], cond);
     conditionals_g[query] = cond;
     return cond;
@@ -258,7 +258,7 @@ for key in diction_h:
     dat=diction_h[key];
     for i in range(0,12):
         marginal_table = stats.itemfreq(dat[:,i])
-        if key == 'grade 2' and i == 2:
+        if key == 'grade 2' and i == 0:
             print
         marginalTemplate = dict(lst[i])
         for templateValue in marginal_table[:,0]:
@@ -271,11 +271,6 @@ for key in diction_h:
         
         marginal_table_values = marginal_table_values/s;
         marginal_table1 = dict();
-        marginalTemplate = dict(lst[i])
-        for templateValue in marginal_table[:,0]:
-            marginalTemplate.pop(templateValue, None);
-        for templateKey in marginalTemplate:
-            marginal_table = np.append(marginal_table, [[templateKey, 1]], axis = 0);
        # print marginal_table_value;
         for j in range(0, len(marginal_table_values)):
             marginal_table[j,1] = marginal_table_values[j];
@@ -393,37 +388,37 @@ for key in sor_map:
 
 #calculateConditionalQuery('1|2,11', grade_marginal, 'grade 2');
 
-maxFeat = np.zeros(12,dtype = np.int);
-lst = getHandPrintDomain()
-i=0
-for dic in lst:
-    maxFeat[i] = len(dic)
-    i = i + 1 
-for key in diction_h:
-    gibb = np.zeros(12,dtype = np.int);
-    for i in range(0,12):
-        gibb[i] = np.random.random_integers(0,maxFeat[i])
-        
-    for i in range(0,12):
-        parents = G[i]
-        probKey = ""
-        valueQuery = ""
-        for par in range(0,len(parents)):
-            if parents[par] == 1:
-                if probKey == "":
-                    probKey = str(par)
-                    valueQuery = str(diction_h[key][i][par])
-                else:
-                    probKey = probKey + "," + str(par);
-                    valueQuery = valueQuery + "," + str(diction_h[key][i][par])
-                
-        if probKey == "":  
-            probKey = str(i)
-            valueQuery = str(diction_h[key][i][j])
-        else:
-            probKey = str(j)+"|"+probKey
-            valueQuery = str(diction_h[key][i][j]) + "|" + valueQuery
-        
-        cond = calculateConditionalQuery(probKey, grade_marginal, key)  
+#maxFeat = np.zeros(12,dtype = np.int);
+#lst = getHandPrintDomain()
+#i=0
+#for dic in lst:
+#    maxFeat[i] = len(dic)
+#    i = i + 1 
+#for key in diction_h:
+#    gibb = np.zeros(12,dtype = np.int);
+#    for i in range(0,12):
+#        gibb[i] = np.random.random_integers(0,maxFeat[i])
+#        
+#    for i in range(0,12):
+#        parents = G[i]
+#        probKey = ""
+#        valueQuery = ""
+#        for par in range(0,len(parents)):
+#            if parents[par] == 1:
+#                if probKey == "":
+#                    probKey = str(par)
+#                    valueQuery = str(diction_h[key][i][par])
+#                else:
+#                    probKey = probKey + "," + str(par);
+#                    valueQuery = valueQuery + "," + str(diction_h[key][i][par])
+#                
+#        if probKey == "":  
+#            probKey = str(i)
+#            valueQuery = str(diction_h[key][i][j])
+#        else:
+#            probKey = str(j)+"|"+probKey
+#            valueQuery = str(diction_h[key][i][j]) + "|" + valueQuery
+#        
+#        cond = calculateConditionalQuery(probKey, grade_marginal, key)  
           
     
